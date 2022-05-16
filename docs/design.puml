@@ -1,0 +1,30 @@
+@startuml design
+
+package bonsaidiary {
+
+	interface __main__ <<cli interface>> {
+		__main__()
+		getEntry()
+		config()
+	}
+
+	interface diary <<saves images and metadata>> {
+		save(data)
+	}
+
+	class insta <<posts to instagram>> {
+		__init__(username, password)
+		post(data)
+	}
+
+	interface crop <<crops images for posting>> {
+		crop(ImageBuffer): ImageBuffer
+	}
+
+	__main__ -d- diary
+	__main__ -d- insta
+	__main__ -d- crop
+
+}
+
+@enduml
