@@ -2,8 +2,8 @@
 
 package bonsaidiary {
 
-	interface __main__ <<cli interface>> {
-		__main__()
+	interface cli <<cli interface>> {
+		main()
 		getEntry()
 		config()
 	}
@@ -21,10 +21,11 @@ package bonsaidiary {
 		crop(ImageBuffer): ImageBuffer
 	}
 
-	__main__ -d- diary
-	__main__ -d- insta
-	__main__ -d- crop
+	cli -d- diary
+	cli-d- insta
+	cli -d- crop
 
 }
 
 @enduml
+
