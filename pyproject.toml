@@ -5,14 +5,16 @@ description = "a cli tool for plant based instagram accounts"
 authors = ["joshuajeschek <joshua@jeschek.eu>"]
 
 [tool.poetry.scripts]
-bonsaidiary = 'bonsaidiary.cli:main'
-bd = 'bonsaidiary.cli:main'
+bonsaidiary = 'bonsaidiary.cli:app'
+bd = 'bonsaidiary.cli:app'
 
 [tool.poetry.dependencies]
 python = "^3.10"
 keyring = "^23.5.1"
 PyGithub = "^1.55"
 PyYAML = "^6.0"
+typer = "^0.4.1"
+click-spinner = "^0.1.10"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
