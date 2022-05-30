@@ -14,23 +14,23 @@ def directory_callback(value: str):
 
 @app.callback(invoke_without_command = True)
 def main(
-        directory: str = typer.Option(
-            default = os.getcwd(),
-            show_default = False,
-            prompt = typer.style('Where should the diary be created?', bg=typer.colors.BLACK),
-            help = 'the directory of the diary [default: <current directory>]',
-            callback = directory_callback),
-        name: str = typer.Option(
-            default = lambda: state['name_default'],
-            show_default = False,
-            prompt = typer.style('What should the diary be called?', bg=typer.colors.BLACK),
-            help = 'the name of the diary [default: <directory name>]'),
-        git: bool = typer.Option(
-            default = True,
-            help = 'wether a git repository should be created'),
-        add: bool = typer.Option(
-            default = False,
-            help = 'wether th diary already exists')
+        directory: str=typer.Option(
+            default=os.getcwd(),
+            show_default=False,
+            prompt=typer.style('Where should the diary be created?', bg=typer.colors.BLACK),
+            help='the directory of the diary [default: <current directory>]',
+            callback=directory_callback),
+        name: str=typer.Option(
+            default=lambda: state['name_default'],
+            show_default=False,
+            prompt=typer.style('What should the diary be called?', bg=typer.colors.BLACK),
+            help='the name of the diary [default: <directory name>]'),
+        git: bool=typer.Option(
+            default=True,
+            help='wether a git repository should be created'),
+        add: bool=typer.Option(
+            default=False,
+            help='wether th diary already exists')
         ):
     '''
     Create a new Diary.
@@ -48,7 +48,7 @@ def main(
     typer.echo(f'exists: {util.styled.YES if add else util.styled.NO}')
 
     typer.confirm(f'{"Add" if add else "Create"} diary with the above configuration?',
-            default = True, abort = True)
+            default=True, abort=True)
 
     typer.echo(f'{"Adding" if add else "Creating"} {typer.style(name, fg = typer.colors.GREEN)}...')
 
