@@ -2,6 +2,7 @@ import os
 import typer
 from . import util
 from . import cli
+from . import diary
 
 app = typer.Typer()
 
@@ -11,6 +12,23 @@ def directory_callback(value: str):
     value = os.path.normpath(value)
     state['name_default'] = value.split(os.sep)[-1]
     return value
+
+def add(directory: str, name: str, git: bool):
+    typer.echo(f'Adding {typer.style(name, fg = typer.colors.GREEN)}...')
+    if not os.path.exists(directory):
+        typer.echo('Diary does not exist - cannot add non-existing directory')
+        raise typer.Abort()
+
+def create(directory: str, name: str, git: bool):
+    typer.echo(f'Creating {typer.style(name, fg = typer.colors.GREEN)}...')
+    os.makedirs(directory, exist_ok=True)
+    os.chdir(directory)
+    if os.listdir(directory):
+        typer.echo('Directory not empty - cannot create new diary')
+        raise typer.Abort()
+    
+    new_diary = diary.Diary()
+    new_diary.save(os.path.join(directory, 'diary.json'))
 
 @app.callback(invoke_without_command = True)
 def main(
@@ -28,7 +46,7 @@ def main(
         git: bool=typer.Option(
             default=True,
             help='wether a git repository should be created'),
-        add: bool=typer.Option(
+        exists: bool=typer.Option(
             default=False,
             help='wether th diary already exists')
         ):
@@ -41,14 +59,21 @@ def main(
 
      - to run the command without any more required input, pass directory and name as options
     '''
+
     typer.echo()
+
+    directory =  os.path.abspath(os.path.expanduser(os.path.normpath(directory)))
+
     typer.echo(f'directory: {typer.style(directory, fg = typer.colors.GREEN)}')
     typer.echo(f'name: {typer.style(name, fg = typer.colors.GREEN)}')
     typer.echo(f'create git repo: {util.styled.YES if git else util.styled.NO}')
-    typer.echo(f'exists: {util.styled.YES if add else util.styled.NO}')
+    typer.echo(f'exists: {util.styled.YES if exists else util.styled.NO}')
 
-    typer.confirm(f'{"Add" if add else "Create"} diary with the above configuration?',
+    typer.confirm(f'{"Add" if exists else "Create"} diary with the above configuration?',
             default=True, abort=True)
-
-    typer.echo(f'{"Adding" if add else "Creating"} {typer.style(name, fg = typer.colors.GREEN)}...')
-
+    
+    if exists:
+        add(directory, name, git)
+    else:
+        create(directory, name, git) 
+    
